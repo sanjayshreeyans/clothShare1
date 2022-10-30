@@ -64,7 +64,7 @@ const App = () => {
 export default App;
 // // const styles = StyleSheet.create({
 // //     container: {
-
+ 
 // //         justifyContent: 'center',
 // //         paddingTop: 200,
 // //         backgroundColor: 'white',
