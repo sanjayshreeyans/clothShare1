@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity, NavigatingContainer, ImageBackground } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { Header } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import { Image } from "react-native";

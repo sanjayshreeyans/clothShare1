@@ -20,7 +20,7 @@ import {
 } from "react-native-responsive-screen";
 import SelectList from "react-native-dropdown-select-list";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { Header } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import { Image } from "react-native";
@@ -32,6 +32,9 @@ import { Touchable } from "react-native-web";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // const Stack = createNativeStackNavigator();
+import { connectSearchBox } from "react-instantsearch-dom";
+import algoliasearch from "algoliasearch";
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch-dom";
 
 export default function adScreen3({ navigation }) {
 
@@ -42,10 +45,201 @@ export default function adScreen3({ navigation }) {
   const data1 = [
     { key: "1", value: "Rent" },
     { key: "2", value: "Sell" },
-    
+    { key: "3", value: "Donate" },
   ];
 
 
+      const SearchBox = ({ currentRefinement, refine }) => {
+        const [search, updateSearch] = React.useState();
+        const screenWidth = Dimensions.get("window").width;
+        const screenHeight = Dimensions.get("window").height;
+
+       if (screenWidth > screenHeight) {
+         return (
+           <Header
+             // containerStyle={styles.HeaderStyle}
+             elevated={true}
+             // containerStyle={styles.container}
+
+             leftComponent={
+               <View
+                 style={{
+                   flex: 1,
+                   flexDirection: "row",
+                   justifyContent: "center",
+                   alignItems: "center",
+                 }}
+               >
+                 <Text
+                   style={{
+                     // fontSize: "1.5rem"
+                     fontSize: hp("4"),
+                     fontWeight: "bold",
+                     textAlign: "center",
+                     justifyContent: "center",
+                     alignItems: "center",
+                     color: "white",
+                   }}
+                 >
+                   ClothShare
+                 </Text>
+
+                 <TouchableOpacity
+                   paddingTop={hp("2%")}
+                   title="Sell"
+                   color="purple"
+                   onPress={() => navigation.navigate("adScreen")}
+                   style={{
+                     marginLeft: wp("2"),
+                     width: wp("8%"),
+                     height: hp("5%"),
+                     justifyContent: "center",
+                     borderRadius: 25,
+                     backgroundColor: "rgb(90,210,138)",
+                   }}
+                 >
+                   <Text
+                     style={{
+                       fontSize: hp("1.5"),
+                       alignSelf: "center",
+                       justifyContent: "center",
+                       alignItems: "right",
+                       color: "black",
+                     }}
+                   >
+                     Sell or Rent
+                   </Text>
+                 </TouchableOpacity>
+
+                 <SearchBar
+                   round={true}
+                   clearIcon={true}
+                   lightTheme={true}
+                   placeholderTextColor={"black"}
+                   containerStyle={{
+                     color: "white",
+                     width: wp("50"),
+                     paddingLeft: 30,
+                     justifyContent: "center",
+                     alignItems: "center",
+                     alignSelf: "center",
+                     backgroundColor: "transparent",
+                     borderBottomColor: "transparent",
+                     borderTopColor: "transparent",
+                     borderTopWidth: 0,
+                     borderBottomWidth: 0,
+                   }}
+                   inputContainerStyle={styles.containerSearch2}
+                   inputStyle={{ color: "black" }}
+                   placeholder="Type Here..."
+                   value={currentRefinement}
+                   onChange={(event) => refine(event.currentTarget.value)}
+                 ></SearchBar>
+               </View>
+             }
+             rightComponent={{ icon: "home", color: "#fff" }}
+           />
+         );
+       } else if (screenHeight > screenWidth) {
+         return (
+           <Header
+             // containerStyle={styles.HeaderStyle}
+             elevated={true}
+             // containerStyle={styles.container}
+
+             centerComponent={
+               <View style={{ flex: 1, flexDirection: "colum" }}>
+                 <Text
+                   style={{
+                     marginTop: wp("2%"),
+                     // fontSize: "1.5rem"
+                     paddingBottom: hp("2"),
+                     fontSize: hp("4"),
+                     fontWeight: "bold",
+                     textAlign: "center",
+                     justifyContent: "center",
+                     alignItems: "center",
+                     color: "white",
+                   }}
+                 >
+                   ClothShare
+                 </Text>
+
+                 <View
+                   style={{
+                     flex: 1,
+                     flexDirection: "row",
+                     justifyContent: "center",
+                   }}
+                 >
+                   <TouchableOpacity
+                     title="Sell"
+                     color="purple"
+                     onPress={() => navigation.navigate("adScreen")}
+                     style={{
+                       width: wp("13%"),
+                       height: hp("5%"),
+                       justifyContent: "center",
+                       alignItems: "center",
+                       borderRadius: 25,
+                       backgroundColor: "rgb(90,210,138)",
+                     }}
+                   >
+                     <Text
+                       style={{
+                         paddingLeft: 10,
+                         fontSize: hp("1.5"),
+                         alignSelf: "right",
+                         justifyContent: "right",
+                         alignItems: "right",
+                         color: "black",
+                       }}
+                     >
+                       Sell or Rent
+                     </Text>
+                   </TouchableOpacity>
+                   <SearchBar
+                     round={true}
+                     clearIcon={true}
+                     lightTheme={true}
+                     placeholderTextColor={"black"}
+                     containerStyle={{
+                       // height: "10%",
+                       color: "white",
+                       width: wp("85"),
+                       paddingTop: 0,
+                       justifyContent: "center",
+                       alignItems: "center",
+                       alignSelf: "center",
+                       backgroundColor: "transparent",
+                       borderBottomColor: "transparent",
+                       borderTopColor: "transparent",
+                       borderTopWidth: 0, //works
+                       borderBottomWidth: 0, //works
+                     }}
+                     inputContainerStyle={{
+                       color: "black",
+                     }}
+                     inputStyle={{ color: "black" }}
+                     placeholder="Type Here..."
+                     value={currentRefinement}
+                     onChange={(event) => refine(event.currentTarget.value)}
+                   ></SearchBar>
+                 </View>
+               </View>
+             }
+             rightComponent={{ icon: "home", color: "#fff" }}
+           />
+         );
+       }
+      };
+
+      const ALGOLIA_ID = "2RC54JEYQ4";
+
+      const Search_ID = "213f763bef6a347d940a29db2e8e2f42";
+
+      const searchClient = algoliasearch(ALGOLIA_ID, Search_ID);
+      const CustomSearchBox = connectSearchBox(SearchBox);
 
   const didMount = React.useRef(false);
 
@@ -135,12 +329,17 @@ function onChangedNumeric(txt) {
 
   return (
     <View style={styles.container}>
+      <InstantSearch indexName="SearchCloth" searchClient={searchClient}>
+        {" "}
+        <CustomSearchBox></CustomSearchBox>
+      </InstantSearch>
       <View style={{ height: hp("5%") }}></View>
       {/* How to create a button i n react native */}
       <Text
         style={{
           fontWeight: "bold",
           color: "#c2c2c2",
+          marginLeft: wp("15"),
           paddingBottom: hp("3%"),
         }}
       >
@@ -150,7 +349,16 @@ function onChangedNumeric(txt) {
       <SelectList
         setSelected={setSelectedMethod}
         data={data1}
-        boxStyles={{ width: wp("60%") }}
+        boxStyles={{
+          width: wp("60%"),
+          justifyContent: "center",
+          alignSelf: "center",
+        }}
+        dropdownStyles={{
+          width: wp("60%"),
+         
+          alignSelf: "center",
+        }}
         onSelect={() => changeUIBasedOnBuy()}
         placeholder="Sell or Rent"
         // dropdownStyles={{ marginHorizontal: wp("20%"), width: wp("20") }}
@@ -163,6 +371,7 @@ function onChangedNumeric(txt) {
           color: "#c2c2c2",
           paddingTop: hp("3%"),
           paddingBottom: hp("3%"),
+          marginLeft: wp("15"),
         }}
       >
         Price:
@@ -182,6 +391,7 @@ function onChangedNumeric(txt) {
           fontWeight: "bold",
           color: "#c2c2c2",
           paddingTop: hp("3%"),
+          marginLeft: wp("15"),
           paddingBottom: hp("3%"),
         }}
       >
@@ -194,6 +404,7 @@ function onChangedNumeric(txt) {
           height: hp("5%"),
           borderRadius: hp("1%"),
           backgroundColor: "rgb(239,239,239)",
+          alignSelf: " center",
         }}
         selectedValue={priceMethod}
         onValueChange={(itemValue, itemIndex) => priceMethodChange(itemValue)}
@@ -209,19 +420,19 @@ function onChangedNumeric(txt) {
       <Button
         title="NEXT"
         raised={true}
-        onPress={() => navigation.navigate("adScreen4", {
-
-          titleLabel: navigation.getParam("titleLabel"),
-          image: navigation.getParam("image"),
-          descriptionLabel: navigation.getParam("descriptionLabel"),
-          selectedCondition: navigation.getParam("selectedCondition"),
-          selectedMethod: selected,
-          numericPrice: numericPrice,
-          pricingMethod: priceMethod,
-
-
-        })}
+        onPress={() =>
+          navigation.navigate("adScreen4", {
+            titleLabel: navigation.getParam("titleLabel"),
+            image: navigation.getParam("image"),
+            descriptionLabel: navigation.getParam("descriptionLabel"),
+            selectedCondition: navigation.getParam("selectedCondition"),
+            selectedMethod: selected,
+            numericPrice: numericPrice,
+            pricingMethod: priceMethod,
+          })
+        }
         titleStyle={{ paddingLeft: 20 }}
+        style={{ width: wp("75"), alignSelf: "center" }}
         icon={
           <Icon
             name="arrow-right"
@@ -231,14 +442,24 @@ function onChangedNumeric(txt) {
           />
         }
       />
+
+      <View
+        style={{
+          height: hp("100"),
+          width: wp("100"),
+          backgroundColor: "white",
+        }}
+      ></View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    
     justifyContent: "center",
     alignSelf: "center",
+    backgroundColor: "white"
   },
 
   dropdown: {

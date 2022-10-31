@@ -9,6 +9,10 @@ import {
   NavigatingContainer,
   ImageBackground,
 } from "react-native";
+import {
+  connectSearchBox} from "react-instantsearch-dom";
+import algoliasearch from "algoliasearch";
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch-dom";
 
 // TODO: CONFIGURE THE ICONS WHEN DEPLOYING: https://github.com/oblador/react-native-vector-icons
 import { Button } from "react-native-elements";
@@ -18,7 +22,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { Header } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import { Image } from "react-native";
@@ -29,6 +33,8 @@ import * as ImagePicker from "expo-image-picker";
 import { Touchable } from "react-native-web";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+
+
 // const Stack = createNativeStackNavigator();
 
 export default function adScreen({ navigation }) {
@@ -38,6 +44,11 @@ export default function adScreen({ navigation }) {
     require("../upload-photo.jpeg")
   ); // Stores the user picked Image
   var cou = 0;
+    const ALGOLIA_ID = "2RC54JEYQ4";
+
+    const Search_ID = "213f763bef6a347d940a29db2e8e2f42";
+
+    const searchClient = algoliasearch(ALGOLIA_ID, Search_ID);
   
   const didMount = React.useRef(false);
 
@@ -123,52 +134,185 @@ export default function adScreen({ navigation }) {
     }
     
   }
-  
+    const SearchBox = ({ currentRefinement, refine }) => {
+      const [search, updateSearch] = React.useState();
+      const screenWidth = Dimensions.get("window").width;
+      const screenHeight = Dimensions.get("window").height;
+
+     if (screenWidth > screenHeight) {
+       return (
+         <Header
+           // containerStyle={styles.HeaderStyle}
+           elevated={true}
+           // containerStyle={styles.container}
+
+           leftComponent={
+             <View
+               style={{
+                 flex: 1,
+                 flexDirection: "row",
+                 justifyContent: "center",
+                 alignItems: "center",
+               }}
+             >
+               <Text
+                 style={{
+                   // fontSize: "1.5rem"
+                   fontSize: hp("4"),
+                   fontWeight: "bold",
+                   textAlign: "center",
+                   justifyContent: "center",
+                   alignItems: "center",
+                   color: "white",
+                 }}
+               >
+                 ClothShare
+               </Text>
+
+               <TouchableOpacity
+                 paddingTop={hp("2%")}
+                 title="Sell"
+                 color="purple"
+                 onPress={() => navigation.navigate("adScreen")}
+                 style={{
+                   marginLeft: wp("2"),
+                   width: wp("8%"),
+                   height: hp("5%"),
+                   justifyContent: "center",
+                   borderRadius: 25,
+                   backgroundColor: "rgb(90,210,138)",
+                 }}
+               >
+                 <Text
+                   style={{
+                     fontSize: hp("1.5"),
+                     alignSelf: "center",
+                     justifyContent: "center",
+                     alignItems: "right",
+                     color: "black",
+                   }}
+                 >
+                   Sell or Rent
+                 </Text>
+               </TouchableOpacity>
+
+               <SearchBar
+                 round={true}
+                 clearIcon={true}
+                 lightTheme={true}
+                 placeholderTextColor={"black"}
+                 containerStyle={{
+                   color: "white",
+                   width: wp("50"),
+                   paddingLeft: 30,
+                   justifyContent: "center",
+                   alignItems: "center",
+                   alignSelf: "center",
+                   backgroundColor: "transparent",
+                   borderBottomColor: "transparent",
+                   borderTopColor: "transparent",
+                   borderTopWidth: 0,
+                   borderBottomWidth: 0,
+                 }}
+                 inputContainerStyle={styles.containerSearch2}
+                 inputStyle={{ color: "black" }}
+                 placeholder="Type Here..."
+                 value={currentRefinement}
+                 onChange={(event) => refine(event.currentTarget.value)}
+               ></SearchBar>
+             </View>
+           }
+           rightComponent={{ icon: "home", color: "#fff" }}
+         />
+       );
+     } else if (screenHeight > screenWidth) {
+       return (
+         <Header
+           // containerStyle={styles.HeaderStyle}
+           elevated={true}
+           // containerStyle={styles.container}
+
+           centerComponent={
+             <View style={{ flex: 1, flexDirection: "colum" }}>
+               <Text style={styles.paragraph}>ClothShare</Text>
+
+               <View
+                 style={{
+                   flex: 1,
+                   flexDirection: "row",
+                   justifyContent: "center",
+                 }}
+               >
+                 <TouchableOpacity
+                   title="Sell"
+                   color="purple"
+                   onPress={() => navigation.navigate("adScreen")}
+                   style={{
+                     width: wp("13%"),
+                     height: hp("5%"),
+                     justifyContent: "center",
+                     alignItems: "center",
+                     borderRadius: 25,
+                     backgroundColor: "rgb(90,210,138)",
+                   }}
+                 >
+                   <Text
+                     style={{
+                       paddingLeft: 10,
+                       fontSize: hp("1.5"),
+                       alignSelf: "right",
+                       justifyContent: "right",
+                       alignItems: "right",
+                       color: "black",
+                     }}
+                   >
+                     Sell or Rent
+                   </Text>
+                 </TouchableOpacity>
+                 <SearchBar
+                   round={true}
+                   clearIcon={true}
+                   lightTheme={true}
+                   placeholderTextColor={"black"}
+                   containerStyle={{
+                     // height: "10%",
+                     color: "white",
+                     width: wp("85"),
+                     paddingTop: 0,
+                     justifyContent: "center",
+                     alignItems: "center",
+                     alignSelf: "center",
+                     backgroundColor: "transparent",
+                     borderBottomColor: "transparent",
+                     borderTopColor: "transparent",
+                     borderTopWidth: 0, //works
+                     borderBottomWidth: 0, //works
+                   }}
+                   inputContainerStyle={{
+                     color: "black",
+                   }}
+                   inputStyle={{ color: "black" }}
+                   placeholder="Type Here..."
+                   value={currentRefinement}
+                   onChange={(event) => refine(event.currentTarget.value)}
+                 ></SearchBar>
+               </View>
+             </View>
+           }
+           rightComponent={{ icon: "home", color: "#fff" }}
+         />
+       );
+     }
+    };
+
+    const CustomSearchBox = connectSearchBox(SearchBox);
   return (
     <View style={styles.container}>
       {/* How to create a button in react native */}
-      <Header
-          // containerStyle={styles.HeaderStyle}
-          elevated={true}
-          // containerStyle={styles.container}
-          leftComponent={
-            <View style={styles.HeaderStyle}>
-              {/* <Icon
-              raised
-              name="arrow-back"
-              type="material"
-              color="#f50"
-              onPress={() => navigation.navigate("HomeScreen")}
-            /> */}
-
-              <Text style={styles.paragraph}>ClothShare</Text>
-
-              <TouchableOpacity
-                  paddingTop={hp("2%")}
-                  title="Sell"
-                  color="purple"
-                  onPress={() => navigation.navigate("adScreen")}
-                  style={styles.roundButton23}
-              >
-                <Text style={styles.roundButton15}>Sell or Rent</Text>
-              </TouchableOpacity>
-            </View>
-          }
-          centerComponent={
-            <SearchBar
-                round={true}
-                clearIcon={true}
-                lightTheme={true}
-                placeholderTextColor={"black"}
-                containerStyle={styles.containerSearch}
-                inputContainerStyle={styles.containerSearch2}
-                inputStyle={{ color: "black" }}
-                placeholder="Type Here..."
-
-            ></SearchBar>
-          }
-          rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <InstantSearch indexName="SearchCloth" searchClient={searchClient}>
+        {" "}
+        <CustomSearchBox></CustomSearchBox>
+      </InstantSearch>
 
       <View
         style={{ width: 200, height: hp("2%"), alignItems: "center" }}
@@ -219,9 +363,8 @@ export default function adScreen({ navigation }) {
       <Button
         title="NEXT"
         raised={true}
-
         titleStyle={{ paddingLeft: 20 }}
-        style={{width:wp("50%"), height:hp("10%"), marginLeft:wp("25%")}}
+        style={{ width: wp("50%"), height: hp("10%"), marginLeft: wp("25%") }}
         onPress={() =>
           navigation.navigate("adScreen2", {
             titleLabel: titleLabel,
@@ -280,7 +423,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0, //works
   },
   containerSearch2: {
-    textColor: "black",
     color: "black",
   },
 

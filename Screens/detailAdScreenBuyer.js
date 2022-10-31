@@ -48,7 +48,11 @@ export default function detailAdScreenBuyer({navigation, route}) {
     const [stateAndCity, setSelectedCity] = React.useState("No")
     const [title, setTitle]  = React.useState("No")
     const [description, setDescription] = React.useState("No")
+    const ALGOLIA_ID = "2RC54JEYQ4";
 
+    const Search_ID = "213f763bef6a347d940a29db2e8e2f42";
+
+    const searchClient = algoliasearch(ALGOLIA_ID, Search_ID);
     var d = null
     const db = getDatabase()
     function getId ( ) {
@@ -121,55 +125,186 @@ export default function detailAdScreenBuyer({navigation, route}) {
         getId();
     }, [])
     console.log(adId, "Detail Ad screen buyer")
+   
+    const SearchBox = ({ currentRefinement, refine }) => {
+      const [search, updateSearch] = React.useState();
+      const screenWidth = Dimensions.get("window").width;
+      const screenHeight = Dimensions.get("window").height;
 
+       if (screenWidth > screenHeight) {
+         return (
+           <Header
+             // containerStyle={styles.HeaderStyle}
+             elevated={true}
+             // containerStyle={styles.container}
+
+             leftComponent={
+               <View
+                 style={{
+                   flex: 1,
+                   flexDirection: "row",
+                   justifyContent: "center",
+                   alignItems: "center",
+                 }}
+               >
+                 <Text
+                   style={{
+                     // fontSize: "1.5rem"
+                     fontSize: hp("4"),
+                     fontWeight: "bold",
+                     textAlign: "center",
+                     justifyContent: "center",
+                     alignItems: "center",
+                     color: "white",
+                   }}
+                 >
+                   ClothShare
+                 </Text>
+
+                 <TouchableOpacity
+                   paddingTop={hp("2%")}
+                   title="Sell"
+                   color="purple"
+                   onPress={() => navigation.navigate("adScreen")}
+                   style={{
+                     marginLeft: wp("2"),
+                     width: wp("8%"),
+                     height: hp("5%"),
+                     justifyContent: "center",
+                     borderRadius: 25,
+                     backgroundColor: "rgb(90,210,138)",
+                   }}
+                 >
+                   <Text
+                     style={{
+                       fontSize: hp("1.5"),
+                       alignSelf: "center",
+                       justifyContent: "center",
+                       alignItems: "right",
+                       color: "black",
+                     }}
+                   >
+                     Sell or Rent
+                   </Text>
+                 </TouchableOpacity>
+
+                 <SearchBar
+                   round={true}
+                   clearIcon={true}
+                   lightTheme={true}
+                   placeholderTextColor={"black"}
+                   containerStyle={{
+                     color: "white",
+                     width: wp("50"),
+                     paddingLeft: 30,
+                     justifyContent: "center",
+                     alignItems: "center",
+                     alignSelf: "center",
+                     backgroundColor: "transparent",
+                     borderBottomColor: "transparent",
+                     borderTopColor: "transparent",
+                     borderTopWidth: 0,
+                     borderBottomWidth: 0,
+                   }}
+                   inputContainerStyle={styles.containerSearch2}
+                   inputStyle={{ color: "black" }}
+                   placeholder="Type Here..."
+                   value={currentRefinement}
+                   onChange={(event) => refine(event.currentTarget.value)}
+                 ></SearchBar>
+               </View>
+             }
+             rightComponent={{ icon: "home", color: "#fff" }}
+           />
+         );
+       } else if (screenHeight > screenWidth) {
+         return (
+           <Header
+             // containerStyle={styles.HeaderStyle}
+             elevated={true}
+             // containerStyle={styles.container}
+
+             centerComponent={
+               <View style={{ flex: 1, flexDirection: "colum" }}>
+                 <Text style={styles.paragraph}>ClothShare</Text>
+
+                 <View
+                   style={{
+                     flex: 1,
+                     flexDirection: "row",
+                     justifyContent: "center",
+                   }}
+                 >
+                   <TouchableOpacity
+                     title="Sell"
+                     color="purple"
+                     onPress={() => navigation.navigate("adScreen")}
+                     style={{
+                       width: wp("13%"),
+                       height: hp("5%"),
+                       justifyContent: "center",
+                       alignItems: "center",
+                       borderRadius: 25,
+                       backgroundColor: "rgb(90,210,138)",
+                     }}
+                   >
+                     <Text
+                       style={{
+                         paddingLeft: 10,
+                         fontSize: hp("1.5"),
+                         alignSelf: "right",
+                         justifyContent: "right",
+                         alignItems: "right",
+                         color: "black",
+                       }}
+                     >
+                       Sell or Rent
+                     </Text>
+                   </TouchableOpacity>
+                   <SearchBar
+                     round={true}
+                     clearIcon={true}
+                     lightTheme={true}
+                     placeholderTextColor={"black"}
+                     containerStyle={{
+                       // height: "10%",
+                       color: "white",
+                       width: wp("85"),
+                       paddingTop: 0,
+                       justifyContent: "center",
+                       alignItems: "center",
+                       alignSelf: "center",
+                       backgroundColor: "transparent",
+                       borderBottomColor: "transparent",
+                       borderTopColor: "transparent",
+                       borderTopWidth: 0, //works
+                       borderBottomWidth: 0, //works
+                     }}
+                     inputContainerStyle={{
+                       color: "black",
+                     }}
+                     inputStyle={{ color: "black" }}
+                     placeholder="Type Here..."
+                     value={currentRefinement}
+                     onChange={(event) => refine(event.currentTarget.value)}
+                   ></SearchBar>
+                 </View>
+               </View>
+             }
+             rightComponent={{ icon: "home", color: "#fff" }}
+           />
+         );
+       }
+    };
+
+const CustomSearchBox = connectSearchBox(SearchBox);
 
     return (
       <View style={styles.container}>
-        <View>
-          {/*<Button onPress={() => getId()}>*/}
-          {/*</Button>*/}
-          <Header
-            // containerStyle={styles.HeaderStyle}
-            elevated={true}
-            // containerStyle={styles.container}
-            leftComponent={
-              <View style={styles.HeaderStyle}>
-                {/* <Icon
-              raised
-              name="arrow-back"
-              type="material"
-              color="#f50"
-              onPress={() => navigation.navigate("HomeScreen")}
-            /> */}
-
-                <Text style={styles.paragraph}>ClothShare</Text>
-
-                <TouchableOpacity
-                  paddingTop={hp("2%")}
-                  title="Sell"
-                  color="purple"
-                  onPress={() => navigation.navigate("adScreen")}
-                  style={styles.roundButton2}
-                >
-                  <Text style={styles.roundButton13}>Sell or Rent</Text>
-                </TouchableOpacity>
-              </View>
-            }
-            centerComponent={
-              <SearchBar
-                round={true}
-                clearIcon={true}
-                lightTheme={true}
-                placeholderTextColor={"black"}
-                containerStyle={styles.containerSearch}
-                inputContainerStyle={styles.containerSearch2}
-                inputStyle={{ color: "black" }}
-                placeholder="Type Here..."
-              ></SearchBar>
-            }
-            rightComponent={{ icon: "home", color: "#fff" }}
-          />
-        </View>
+        <InstantSearch indexName="SearchCloth" searchClient={searchClient}>
+          {" "}
+          <CustomSearchBox></CustomSearchBox>
+        </InstantSearch>
 
         <View style={{ flexDirection: "row" }}>
           <Image
@@ -204,6 +339,15 @@ export default function detailAdScreenBuyer({navigation, route}) {
 
             <Text style={styles.listHeadline}>Description: </Text>
             <Text style={styles.listHeadline}>{description}</Text>
+
+            <TouchableOpacity
+              title="Proceed..."
+              style={styles.roundButton2}
+              // fontColor="white"
+              // onPress={() => gatherAllAttribute()}
+            >
+              <Text style={styles.roundButton13}>Contact Seller</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -233,6 +377,20 @@ const styles = StyleSheet.create({
     // justifyContent: "center", //Centered vertically
     // alignItems: "center", // Centered horizontally
   },
+  containerSearch: {
+    // height: "10%",
+    color: "white",
+    width: wp("100%"),
+    paddingTop: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: "transparent",
+    borderBottomColor: "transparent",
+    borderTopColor: "transparent",
+    borderTopWidth: 0, //works
+    borderBottomWidth: 0, //works
+  },
   containerInsta2: {
     flex: 1,
     alignItems: "center",
@@ -255,7 +413,7 @@ const styles = StyleSheet.create({
   listHeadline: {
     color: "#333333",
     fontWeight: "bold",
-    fontSize: 32,
+    fontSize: hp("3"),
     marginBottom: hp("5"),
   },
 
@@ -313,13 +471,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0, //works
   },
   containerSearch2: {
-    textColor: "black",
     color: "black",
   },
   HeaderStyle: {
-    width: "110%",
+    width: wp("1%"),
     height: "8%",
+    justifyContent: "center",
+    alignItems: "center",
     flexDirection: "row",
+    paddingRight: 10,
   },
 
   invisibleButtonStyle: { width: wp("100%"), height: hp("40%") },
@@ -332,6 +492,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
   },
+  paragraph4: {
+    marginTop: wp("5%"),
+    // fontSize: "1.5rem"
+    fontSize: hp("4"),
+    fontWeight: "bold",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+  },
   paragraph2: {
     margin: 24,
     // fontSize: "1.5rem"
@@ -342,7 +512,7 @@ const styles = StyleSheet.create({
   },
 
   roundButton2: {
-    width: wp("6%"),
+    width: wp("15%"),
     height: hp("5%"),
     justifyContent: "center",
     alignItems: "center",

@@ -41,6 +41,7 @@ import { InfiniteHits } from "react-instantsearch-dom";
 
 export default function FlatListScreen({navigation, route}) {
   const ALGOLIA_ID = "2RC54JEYQ4";
+
   const Search_ID = "213f763bef6a347d940a29db2e8e2f42";
 
   const searchClient = algoliasearch(ALGOLIA_ID, Search_ID)
@@ -134,7 +135,6 @@ const SearchBox = ({ currentRefinement, refine }) => {
   const[search, updateSearch] = React.useState();
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  
   if (screenWidth > screenHeight) {
     return (
       <Header
@@ -142,14 +142,15 @@ const SearchBox = ({ currentRefinement, refine }) => {
         elevated={true}
         // containerStyle={styles.container}
 
-        leftComponent={
-          <View style={{ flex: 1, flexDirection: "row" }}>
+        centerComponent={
+          <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
             <Text
               style={{
                 // fontSize: "1.5rem"
                 fontSize: hp("4"),
                 fontWeight: "bold",
                 textAlign: "center",
+                marginLeft: wp("1"),
                 justifyContent: "center",
                 alignItems: "center",
                 color: "white",
@@ -164,15 +165,21 @@ const SearchBox = ({ currentRefinement, refine }) => {
               color="purple"
               onPress={() => navigation.navigate("adScreen")}
               style={{
-                width: wp("13%"),
+                marginLeft: wp("2"),
+                width: wp("8%"),
                 height: hp("5%"),
-                marginTop: hp("2%"),
                 justifyContent: "center",
                 borderRadius: 25,
                 backgroundColor: "rgb(90,210,138)",
               }}
             >
-              <Text style={styles.roundButton13}>Sell or Rent</Text>
+              <Text style={{
+    fontSize: hp("1.5"),
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "right",
+    color: "black",
+  }}>Sell or Rent</Text>
             </TouchableOpacity>
 
             <SearchBar
@@ -199,6 +206,8 @@ const SearchBox = ({ currentRefinement, refine }) => {
               value={currentRefinement}
               onChange={(event) => refine(event.currentTarget.value)}
             ></SearchBar>
+
+
           </View>
         }
         rightComponent={{ icon: "home", color: "#fff" }}
@@ -216,18 +225,53 @@ const SearchBox = ({ currentRefinement, refine }) => {
           <View style={{ flex: 1, flexDirection: "colum" }}>
             <Text style={styles.paragraph}>ClothShare</Text>
 
-            <SearchBar
-              round={true}
-              clearIcon={true}
-              lightTheme={true}
-              placeholderTextColor={"black"}
-              containerStyle={styles.containerSearch}
-              inputContainerStyle={styles.containerSearch2}
-              inputStyle={{ color: "black" }}
-              placeholder="Type Here..."
-              value={currentRefinement}
-              onChange={(event) => refine(event.currentTarget.value)}
-            ></SearchBar>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <TouchableOpacity
+                paddingTop={hp("2%")}
+                title="Sell"
+                color="purple"
+                onPress={() => navigation.navigate("adScreen")}
+                style={{
+                  width: wp("13%"),
+                  height: hp("5%"),
+                  marginTop: hp("2%"),
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 25,
+                  backgroundColor: "rgb(90,210,138)",
+                }}
+              >
+                <Text style={styles.roundButton13}>Sell or Rent</Text>
+              </TouchableOpacity>
+              <SearchBar
+                round={true}
+                clearIcon={true}
+                lightTheme={true}
+                placeholderTextColor={"black"}
+                containerStyle={{
+                  // height: "10%",
+                  color: "white",
+                  width: wp("85"),
+                  paddingTop: 15,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignSelf: "center",
+                  backgroundColor: "transparent",
+                  borderBottomColor: "transparent",
+                  borderTopColor: "transparent",
+                  borderTopWidth: 0, //works
+                  borderBottomWidth: 0, //works
+                }}
+                inputContainerStyle={{
+                  color: "black",
+                }}
+                inputStyle={{ color: "black" }}
+                placeholder="Type Here..."
+                value={currentRefinement}
+                onChange={(event) => refine(event.currentTarget.value)}
+              ></SearchBar>
+
+            </View>
           </View>
         }
         rightComponent={{ icon: "home", color: "#fff" }}
@@ -277,14 +321,14 @@ const SearchBox = ({ currentRefinement, refine }) => {
        return hp(value);
      }
    }
-  const Hit = ({ hit }) => {
+  function HitFunc ({ hit })  {
     return (
       <View>
         <View style={styles.item}>
           <Image
             source={{ uri: hit.image }}
             style={{
-              resizeMode: "repeat",
+              resizeMode: "contain",
               width: make_square_elms("20"),
               height: make_square_elms("20"),
             }}
@@ -351,7 +395,7 @@ const CustomSearchBox = connectSearchBox(SearchBox);
             facetFilters={["Location:Tampa, FL"]}
             analytics={false}></Configure> */}
 
-          <InfiniteHits hitComponent={Hit} style={styles.containerInsta} />
+          <InfiniteHits hitComponent={HitFunc} style={styles.containerInsta} />
           <View style={styles.item2}>
             <Text>Locations</Text>
             <HierarchicalMenu attributes={["Location"]} />
@@ -464,8 +508,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0, //works
   },
   containerSearch2: {
-    textColor: "black",
-    color: "black",
+    color: "black"
   },
   HeaderStyle: {
     width: wp("1%"),
@@ -498,11 +541,11 @@ const styles = StyleSheet.create({
   },
 
   roundButton13: {
+    paddingLeft: 10,
     fontSize: hp("1.5"),
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "left",
+    alignSelf: "right",
+    justifyContent: "right",
+    alignItems: "right",
     color: "black",
   },
 });

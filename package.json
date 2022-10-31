@@ -37,6 +37,7 @@
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-instantsearch-dom": "^6.38.0",
+        "react-instantsearch-native": "^6.38.0",
         "react-native": "0.64.3",
         "react-native-camera": "^4.2.1",
         "react-native-dropdown-select-list": "^1.0.23",

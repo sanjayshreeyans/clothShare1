@@ -14,7 +14,7 @@ import { Dimensions } from "react-native";
 import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import { initializeApp} from "firebase/app";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import react from "react";
 
@@ -73,16 +73,16 @@ function storeHighScore(userId, score) {
 }
 
 
-const storeData = async (value) => {
-  try {
-    await AsyncStorage.setItem('test', value)
-  } catch (e) {
-    // saving error
-  }
-}
+// const storeData = async (value) => {
+//   try {
+//     await AsyncStorage.setItem('test', value)
+//   } catch (e) {
+//     // saving error
+//   }
+// }
 
-storeData("TESTING")
-console.log("TESTING completed")
+// storeData("TESTING")
+// console.log("TESTING completed")
 
 
 
