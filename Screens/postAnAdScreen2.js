@@ -173,7 +173,7 @@ export default function adScreen2({ navigation }) {
                       fontSize: hp("1.5"),
                       alignSelf: "center",
                       justifyContent: "center",
-                      alignItems: "right",
+                      alignItems: "center",
                       color: "black",
                     }}
                   >
@@ -259,9 +259,9 @@ export default function adScreen2({ navigation }) {
                       style={{
                         paddingLeft: 10,
                         fontSize: hp("1.5"),
-                        alignSelf: "right",
-                        justifyContent: "right",
-                        alignItems: "right",
+                        alignSelf: "center",
+                        justifyContent: "center",
+                        alignItems: "center",
                         color: "black",
                       }}
                     >

@@ -10,9 +10,9 @@ import {
   ImageBackground,
 } from "react-native";
 import {
-  connectSearchBox} from "react-instantsearch-dom";
+  connectSearchBox} from "react-instantsearch-native";
 import algoliasearch from "algoliasearch";
-import { InstantSearch, SearchBox, Hits } from "react-instantsearch-dom";
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch-native";
 
 // TODO: CONFIGURE THE ICONS WHEN DEPLOYING: https://github.com/oblador/react-native-vector-icons
 import { Button } from "react-native-elements";
@@ -188,7 +188,7 @@ export default function adScreen({ navigation }) {
                      fontSize: hp("1.5"),
                      alignSelf: "center",
                      justifyContent: "center",
-                     alignItems: "right",
+                     alignItems: "center",
                      color: "black",
                    }}
                  >
@@ -226,16 +226,28 @@ export default function adScreen({ navigation }) {
          />
        );
      } else if (screenHeight > screenWidth) {
+      console.log("PHONES")
        return (
          <Header
            // containerStyle={styles.HeaderStyle}
            elevated={true}
+           containerStyle={{ height: hp("20") }}
            // containerStyle={styles.container}
 
            centerComponent={
              <View style={{ flex: 1, flexDirection: "colum" }}>
-               <Text style={styles.paragraph}>ClothShare</Text>
-
+               <Text
+                 style={{
+                   alignSelf: "center",
+                   fontSize: 40,
+                   marginTop: hp("1"),
+                   paddingBottom: 50,
+                   fontWeight: "bold",
+                 color: "white"
+                 }}
+               >
+                 ClothShare
+               </Text>
                <View
                  style={{
                    flex: 1,
@@ -248,8 +260,8 @@ export default function adScreen({ navigation }) {
                    color="purple"
                    onPress={() => navigation.navigate("adScreen")}
                    style={{
-                     width: wp("13%"),
-                     height: hp("5%"),
+                     width: wp("15%"),
+                     height: hp("4%"),
                      justifyContent: "center",
                      alignItems: "center",
                      borderRadius: 25,
@@ -258,11 +270,11 @@ export default function adScreen({ navigation }) {
                  >
                    <Text
                      style={{
-                       paddingLeft: 10,
+                      //  paddingLeft: 10,
                        fontSize: hp("1.5"),
-                       alignSelf: "right",
-                       justifyContent: "right",
-                       alignItems: "right",
+                       alignSelf: "center",
+                       justifyContent: "center",
+                       alignItems: "center",
                        color: "black",
                      }}
                    >
@@ -277,16 +289,15 @@ export default function adScreen({ navigation }) {
                    containerStyle={{
                      // height: "10%",
                      color: "white",
-                     width: wp("85"),
-                     paddingTop: 0,
-                     justifyContent: "center",
-                     alignItems: "center",
+                     width: wp("75"),
+                     justifyContent: "top",
+                     alignItems: "top",
                      alignSelf: "center",
                      backgroundColor: "transparent",
                      borderBottomColor: "transparent",
                      borderTopColor: "transparent",
-                     borderTopWidth: 0, //works
-                     borderBottomWidth: 0, //works
+                     //  borderTopWidth: 0, //works
+                     //  borderBottomWidth: 0, //works
                    }}
                    inputContainerStyle={{
                      color: "black",
@@ -310,8 +321,9 @@ export default function adScreen({ navigation }) {
     <View style={styles.container}>
       {/* How to create a button in react native */}
       <InstantSearch indexName="SearchCloth" searchClient={searchClient}>
-        {" "}
+        
         <CustomSearchBox></CustomSearchBox>
+
       </InstantSearch>
 
       <View
@@ -441,7 +453,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: "bold",
     textAlign: "center",
-    color: "white",
+    color: "black",
   },
   paragraphCard: {
     fontSize: hp("2%"),

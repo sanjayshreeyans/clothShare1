@@ -3,7 +3,7 @@ import * as React from "react";
 // // import Constants from 'expo-constants';
 import { useFonts } from "expo-font";
 // // import { initializeApp } from 'firebase/app';
-// import Navigator from "./routes/homeStack";
+import Navigator from "./routes/homeStack";
 
 // //import { AppLoading } from "expo";
 
@@ -56,15 +56,14 @@ import { useFonts } from "expo-font";
 // //     });
 // // }
 
-// const App = () => {
- 
-//   return <Navigator />;
-// };
+const App = () => {
+  return <Navigator />;
+};
 
-// export default App;
+export default App;
 // // const styles = StyleSheet.create({
 // //     container: {
- 
+
 // //         justifyContent: 'center',
 // //         paddingTop: 200,
 // //         backgroundColor: 'white',
@@ -172,64 +171,63 @@ import { useFonts } from "expo-font";
 
 // // Below is SignupView
 
+// import React from "react";
+// import { createAppContainer } from "react-navigation";
+// import { createStackNavigator } from "react-navigation-stack";
 
+// import LoginView from "./Screens/LoginScreen.js";
+// import adScreen from "./Screens/postAnAdScreen.js";
+// import adScreen2 from "./Screens/postAnAdScreen2";
+// import adScreen3 from "./Screens/postAnAdScreen3";
+// import adScreen4 from "./Screens/postAnAdScreen4"
+// import FlatListScreen from "./Screens/FlatListScreen.js";
+// import adScreen5 from "./Screens/postAnAdScreen5";
+// import detailAdScreenBuyer from "./Screens/detailAdScreenBuyer.js"
+// import { AppRegistry, Platform } from 'react-native';
 
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+// // import SignupView from '../Screens/SignupScreen.js'
+// // import HomeView from "./Screens/HomeScreen.js";
+// // import RefinementList from "./Screens/agoliaSearch.js";
+// const AppNavigator = createStackNavigator(
+//   {
 
-import LoginView from "./Screens/LoginScreen.js";
-import adScreen from "./Screens/postAnAdScreen.js";
-import adScreen2 from "./Screens/postAnAdScreen2";
-import adScreen3 from "./Screens/postAnAdScreen3";
-import adScreen4 from "./Screens/postAnAdScreen4"
-import FlatListScreen from "./Screens/FlatListScreen.js";
-import adScreen5 from "./Screens/postAnAdScreen5";
-import detailAdScreenBuyer from "./Screens/detailAdScreenBuyer.js"
-import { AppRegistry, Platform } from 'react-native';
+//     FlatScreen: FlatListScreen,
 
-// import SignupView from '../Screens/SignupScreen.js'
-// import HomeView from "./Screens/HomeScreen.js";
-// import RefinementList from "./Screens/agoliaSearch.js";
-const AppNavigator = createStackNavigator(
-  {
+//       detailScreen: detailAdScreenBuyer,
 
-    FlatScreen: FlatListScreen,
+//     adScreen: adScreen,
 
-      detailScreen: detailAdScreenBuyer,
+//     adScreen2: adScreen2,
 
-    adScreen: adScreen,
+//     adScreen3: adScreen3,
 
-    adScreen2: adScreen2,
+//     adScreen4: adScreen4,
+//     adScreen5: adScreen5,
 
-    adScreen3: adScreen3,
+//     // FlatScreen: FlatListScreen,
 
-    adScreen4: adScreen4,
-    adScreen5: adScreen5,
+//     Login: LoginView,
 
-    // FlatScreen: FlatListScreen,
+//     // agoliaSearch: RefinementList,
+//   },
 
-    Login: LoginView,
+//   {
+//     defaultNavigationOptions: {
+//       headerMode: "none",
+//       headerShown: false,
+//     },
+//   },
+//   {
+//     initialRouteName: "FlatScreen",
+//   }
+// );
 
-    // agoliaSearch: RefinementList,
-  },
+// const Navigator = createAppContainer(AppNavigator);
 
-  {
-    defaultNavigationOptions: {
-      headerMode: "none",
-      headerShown: false,
-    },
-  },
-  {
-    initialRouteName: "FlatScreen",
-  }
-);
-
-const Navigator = createAppContainer(AppNavigator);
-
-export default function App() {
-  return (
-    <Navigator>
-      <FlatListScreen/>
-    </Navigator>
-  );
-}
+// export default function App() {
+//   return (
+//     <Navigator>
+//       <FlatListScreen/>
+//     </Navigator>
+//   );
+// }

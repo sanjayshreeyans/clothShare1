@@ -16,20 +16,20 @@
 //     screen: LoginView,
 //   },
 
-  // HomeScreen: {
-  //   screen: HomeView,
+//   HomeScreen: {
+//     screen: HomeView,
 
-  //   defaultNavigationOptions: {
-  //     headerStyle: {
-  //       backgroundColor: "#006600",
-  //     },
-  //     headerTitleStyle: {
-  //       fontWeight: "bold",
-  //       color: "#FFF",
-  //     },
-  //     headerTintColor: "#FFF",
-  //   }
-  // },
+    // defaultNavigationOptions: {
+    //   headerStyle: {
+    //     backgroundColor: "#006600",
+    //   },
+    //   headerTitleStyle: {
+    //     fontWeight: "bold",
+    //     color: "#FFF",
+    //   },
+    //   headerTintColor: "#FFF",
+    // }
+//   },
 
 //   // Signup: {
 //   //   screen: SignupView,
@@ -80,62 +80,65 @@
 
 // ______________________
 
-// import { createAppContainer } from "react-navigation";
-// import "react-native-gesture-handler";
-// import { createStackNavigator } from "react-navigation-stack";
-// import LoginView from "../Screens/LoginScreen.js";
-// import adScreen from "../Screens/postAnAdScreen.js";
-// // import adScreen2 from "../Screens/postAnAdScreen2";
-// // import adScreen3 from "../Screens/postAnAdScreen3";
-// // import adScreen4 from "../Screens/postAnAdScreen4"
-// import FlatListScreen from "../Screens/FlatListScreen.js";
-// // import adScreen5 from "../Screens/postAnAdScreen5";
-// import detailAdScreenBuyer from "../Screens/detailAdScreenBuyer.js"
-// // import { AppRegistry, Platform } from 'react-native';
+import { createAppContainer } from "react-navigation";
+import "react-native-gesture-handler";
+import { createStackNavigator } from "react-navigation-stack";
+import LoginView from "../Screens/LoginScreen.js";
+import adScreen from "../Screens/postAnAdScreen.js";
+// import adScreen2 from "../Screens/postAnAdScreen2";
+// import adScreen3 from "../Screens/postAnAdScreen3";
+// import adScreen4 from "../Screens/postAnAdScreen4"
+import FlatListScreen from "../Screens/FlatListScreen.js";
+// import adScreen5 from "../Screens/postAnAdScreen5";
+import detailAdScreenBuyer from "../Screens/detailAdScreenBuyer.js"
+// import { AppRegistry, Platform } from 'react-native';
 
-// const screens = {
-//   FlatListScreen: {
-//     screen: FlatListScreen,
-//     headerMode: "none",
-//     headerShown: false,
-//   },
+const screens = {
+  FlatListScreen: {
+    screen: FlatListScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
 
-//   Login: {
-//     screen: LoginView,
-//   },
+  adScreen: {
+    screen: adScreen,
+    // headerMode: "none",
+    // header: null,
+    navigationOptions: {
+      header: null,
+    },
+  },
 
-//   adScreen: {
-//     screen: adScreen,
-//   },
+  Login: {
+    screen: LoginView,
+    mode: "modal", // Updated
+  },
 
-//   // adScreen2: {
-//   //   screen: adScreen2,
-//   // },
+  // adScreen2: {
+  //   screen: adScreen2,
+  // },
 
-//   // adScreen3: {
-//   //   screen: adScreen3,
-//   //   header: () => null,
-//   // },
+  // adScreen3: {
+  //   screen: adScreen3,
+  //   header: () => null,
+  // },
 
-//   // adScreen4: {
-//   //   screen: adScreen4,
-//   // },
+  // adScreen4: {
+  //   screen: adScreen4,
+  // },
 
-//   // adScreen5: {
-//   //   screen: adScreen5,
-//   // },
+  // adScreen5: {
+  //   screen: adScreen5,
+  // },
 
-//   detailScreen: {
-//     screen: detailAdScreenBuyer,
-//     headerMode: "none",
-//     headerShown: false,
+  detailScreen: {
+    screen: detailAdScreenBuyer,
+  },
+};
 
-//       header: () => null,
-//   },
-// };
+const HomeStack = createStackNavigator(screens);
 
-// const HomeStack = createStackNavigator(screens);
+const Navigator = createAppContainer(HomeStack);
 
-// const Navigator = createAppContainer(HomeStack);
-
-// export default Navigator;
+export default Navigator;

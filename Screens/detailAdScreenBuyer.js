@@ -180,7 +180,7 @@ export default function detailAdScreenBuyer({navigation, route}) {
                        fontSize: hp("1.5"),
                        alignSelf: "center",
                        justifyContent: "center",
-                       alignItems: "right",
+                       alignItems: "center",
                        color: "black",
                      }}
                    >
@@ -252,9 +252,9 @@ export default function detailAdScreenBuyer({navigation, route}) {
                        style={{
                          paddingLeft: 10,
                          fontSize: hp("1.5"),
-                         alignSelf: "right",
-                         justifyContent: "right",
-                         alignItems: "right",
+                         alignSelf: "center",
+                         justifyContent: "center",
+                         alignItems: "center",
                          color: "black",
                        }}
                      >
@@ -301,10 +301,10 @@ const CustomSearchBox = connectSearchBox(SearchBox);
 
     return (
       <View style={styles.container}>
-        <InstantSearch indexName="SearchCloth" searchClient={searchClient}>
+        {/* <InstantSearch indexName="SearchCloth" searchClient={searchClient}>
           {" "}
           <CustomSearchBox></CustomSearchBox>
-        </InstantSearch>
+        </InstantSearch> */}
 
         <View style={{ flexDirection: "row" }}>
           <Image
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
     height: hp("5%"),
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "bottom", // align
+    alignSelf: "center", // align
     marginTop: hp("2%"),
     borderRadius: 25,
     backgroundColor: "rgb(90,210,138)",

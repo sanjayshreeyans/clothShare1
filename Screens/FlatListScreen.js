@@ -11,20 +11,23 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+// import HitFunc from "./Components/RefinementList";
 import { Dimensions, PixelRatio } from "react-native";
 import { Button, Header } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import * as React from "react";
 
 
-import { RangeSlider } from "react-instantsearch-dom";
-import {
-  connectSearchBox,
-  Configure,
-  Menu,
-  HierarchicalMenu,
-} from "react-instantsearch-dom";
-import { Panel, RefinementList, MenuSelect, ToggleRefinement, SortBy} from "react-instantsearch-dom";
+// import {
+//   connectSearchBox,
+//   Configure,
+//   Menu,
+//   HierarchicalMenu,
+// } from "react-instantsearch-dom";
+
+// import { useSearchBox } from "react-instantsearch-hooks";
+
+import { SearchBox } from "./SearchBox";
 // import { RefinementList } from "react-instantsearch-hooks-web";
 // import { ToggleRefinement } from "react-instantsearch-dom";
 // how to import  connectSearchBox from algolia react instant search?
@@ -33,11 +36,11 @@ import { CheckBox } from "react-native-elements";
 import { getDownloadURL, getStorage } from "firebase/storage";
 import { ref as refS } from "firebase/storage";   
 
-import { Icon } from "react-native-elements";
 import algoliasearch from 'algoliasearch'
-import { InstantSearch, SearchBox, Hits} from "react-instantsearch-dom";
+import { InfiniteHits } from "./InfiniteHits";
+import { InstantSearch,  Hits, connectInfiniteHits} from "react-instantsearch-hooks";
 
-import { InfiniteHits } from "react-instantsearch-dom";
+// import { InfiniteHits } from "react-instantsearch-native";
 
 export default function FlatListScreen({navigation, route}) {
   const ALGOLIA_ID = "2RC54JEYQ4";
@@ -130,159 +133,162 @@ export default function FlatListScreen({navigation, route}) {
   const listSeparator = () => {
     return <View style={styles.separator} />;
   };
+ 
+// const SearchBox = ({ currentRefinement, refine }) => {
+//   const [search, updateSearch] = React.useState();
+//   const screenWidth = Dimensions.get("window").width;
+//   const screenHeight = Dimensions.get("window").height;
+//   if (screenWidth > screenHeight) {
+//     return (
+//       <Header
+//         // containerStyle={styles.HeaderStyle}
+//         elevated={true}
+//         // containerStyle={styles.container}
 
-const SearchBox = ({ currentRefinement, refine }) => {
-  const[search, updateSearch] = React.useState();
-  const screenWidth = Dimensions.get("window").width;
-  const screenHeight = Dimensions.get("window").height;
-  if (screenWidth > screenHeight) {
-    return (
-      <Header
-        // containerStyle={styles.HeaderStyle}
-        elevated={true}
-        // containerStyle={styles.container}
+//         centerComponent={
+//           <View
+//             style={{
+//               flex: 1,
+//               flexDirection: "row",
+//               justifyContent: "center",
+//               alignItems: "center",
+//             }}
+//           >
+//             <Text
+//               style={{
+//                 // fontSize: "1.5rem"
+//                 fontSize: hp("4"),
+//                 fontWeight: "bold",
+//                 textAlign: "center",
+//                 marginLeft: wp("1"),
+//                 justifyContent: "center",
+//                 alignItems: "center",
+//                 color: "white",
+//               }}
+//             >
+//               ClothShare
+//             </Text>
 
-        centerComponent={
-          <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-            <Text
-              style={{
-                // fontSize: "1.5rem"
-                fontSize: hp("4"),
-                fontWeight: "bold",
-                textAlign: "center",
-                marginLeft: wp("1"),
-                justifyContent: "center",
-                alignItems: "center",
-                color: "white",
-              }}
-            >
-              ClothShare
-            </Text>
+//             <TouchableOpacity
+//               paddingTop={hp("2%")}
+//               title="Sell"
+//               color="purple"
+//               onPress={() => navigation.navigate("adScreen")}
+//               style={{
+//                 marginLeft: wp("2"),
+//                 width: wp("8%"),
+//                 height: hp("5%"),
+//                 justifyContent: "center",
+//                 borderRadius: 25,
+//                 backgroundColor: "rgb(90,210,138)",
+//               }}
+//             >
+//               <Text
+//                 style={{
+//                   fontSize: hp("1.5"),
+//                   alignSelf: "center",
+//                   justifyContent: "center",
+//                   alignItems: "right",
+//                   color: "black",
+//                 }}
+//               >
+//                 Sell or Rent
+//               </Text>
+//             </TouchableOpacity>
 
-            <TouchableOpacity
-              paddingTop={hp("2%")}
-              title="Sell"
-              color="purple"
-              onPress={() => navigation.navigate("adScreen")}
-              style={{
-                marginLeft: wp("2"),
-                width: wp("8%"),
-                height: hp("5%"),
-                justifyContent: "center",
-                borderRadius: 25,
-                backgroundColor: "rgb(90,210,138)",
-              }}
-            >
-              <Text style={{
-    fontSize: hp("1.5"),
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "right",
-    color: "black",
-  }}>Sell or Rent</Text>
-            </TouchableOpacity>
+//             <SearchBar
+//               round={true}
+//               clearIcon={true}
+//               lightTheme={true}
+//               placeholderTextColor={"black"}
+//               containerStyle={{
+//                 color: "white",
+//                 width: wp("50"),
+//                 paddingLeft: 30,
+//                 justifyContent: "center",
+//                 alignItems: "center",
+//                 alignSelf: "center",
+//                 backgroundColor: "transparent",
+//                 borderBottomColor: "transparent",
+//                 borderTopColor: "transparent",
+//                 borderTopWidth: 0,
+//                 borderBottomWidth: 0,
+//               }}
+//               inputContainerStyle={styles.containerSearch2}
+//               inputStyle={{ color: "black" }}
+//               placeholder="Type Here..."
+//               value={currentRefinement}
+//               onChange={(event) => refine(event.currentTarget.value)}
+//             ></SearchBar>
+//           </View>
+//         }
+//         rightComponent={{ icon: "home", color: "#fff" }}
+//       />
+//     );
+//   } else if (screenHeight > screenWidth) {
+//     return (
+//       <Header
+//         // containerStyle={styles.HeaderStyle}
+//         elevated={true}
+//         // containerStyle={styles.container}
 
-            <SearchBar
-              round={true}
-              clearIcon={true}
-              lightTheme={true}
-              placeholderTextColor={"black"}
-              containerStyle={{
-                color: "white",
-                width: wp("50"),
-                paddingLeft: 30,
-                justifyContent: "center",
-                alignItems: "center",
-                alignSelf: "center",
-                backgroundColor: "transparent",
-                borderBottomColor: "transparent",
-                borderTopColor: "transparent",
-                borderTopWidth: 0,
-                borderBottomWidth: 0,
-              }}
-              inputContainerStyle={styles.containerSearch2}
-              inputStyle={{ color: "black" }}
-              placeholder="Type Here..."
-              value={currentRefinement}
-              onChange={(event) => refine(event.currentTarget.value)}
-            ></SearchBar>
+//         centerComponent={
+//           <View style={{ flex: 1, flexDirection: "colum" }}>
+//             <Text style={styles.paragraph}>ClothShare</Text>
 
-
-          </View>
-        }
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
-    );
-  } else if (screenHeight > screenWidth) {
-
-    return (
-      <Header
-        // containerStyle={styles.HeaderStyle}
-        elevated={true}
-        // containerStyle={styles.container}
-
-        centerComponent={
-          <View style={{ flex: 1, flexDirection: "colum" }}>
-            <Text style={styles.paragraph}>ClothShare</Text>
-
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <TouchableOpacity
-                paddingTop={hp("2%")}
-                title="Sell"
-                color="purple"
-                onPress={() => navigation.navigate("adScreen")}
-                style={{
-                  width: wp("13%"),
-                  height: hp("5%"),
-                  marginTop: hp("2%"),
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 25,
-                  backgroundColor: "rgb(90,210,138)",
-                }}
-              >
-                <Text style={styles.roundButton13}>Sell or Rent</Text>
-              </TouchableOpacity>
-              <SearchBar
-                round={true}
-                clearIcon={true}
-                lightTheme={true}
-                placeholderTextColor={"black"}
-                containerStyle={{
-                  // height: "10%",
-                  color: "white",
-                  width: wp("85"),
-                  paddingTop: 15,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  alignSelf: "center",
-                  backgroundColor: "transparent",
-                  borderBottomColor: "transparent",
-                  borderTopColor: "transparent",
-                  borderTopWidth: 0, //works
-                  borderBottomWidth: 0, //works
-                }}
-                inputContainerStyle={{
-                  color: "black",
-                }}
-                inputStyle={{ color: "black" }}
-                placeholder="Type Here..."
-                value={currentRefinement}
-                onChange={(event) => refine(event.currentTarget.value)}
-              ></SearchBar>
-
-            </View>
-          </View>
-        }
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
-    );
-    
-  }
-
-    
-     
-  };
+//             <View style={{ flex: 1, flexDirection: "row" }}>
+//               <TouchableOpacity
+//                 paddingTop={hp("2%")}
+//                 title="Sell"
+//                 color="purple"
+//                 onPress={() => navigation.navigate("adScreen")}
+//                 style={{
+//                   width: wp("13%"),
+//                   height: hp("5%"),
+//                   marginTop: hp("2%"),
+//                   justifyContent: "center",
+//                   alignItems: "center",
+//                   borderRadius: 25,
+//                   backgroundColor: "rgb(90,210,138)",
+//                 }}
+//               >
+//                 <Text style={styles.roundButton13}>Sell or Rent</Text>
+//               </TouchableOpacity>
+//               <SearchBar
+//                 round={true}
+//                 clearIcon={true}
+//                 lightTheme={true}
+//                 placeholderTextColor={"black"}
+//                 containerStyle={{
+//                   // height: "10%",
+//                   color: "white",
+//                   width: wp("85"),
+//                   paddingTop: 15,
+//                   justifyContent: "center",
+//                   alignItems: "center",
+//                   alignSelf: "center",
+//                   backgroundColor: "transparent",
+//                   borderBottomColor: "transparent",
+//                   borderTopColor: "transparent",
+//                   borderTopWidth: 0, //works
+//                   borderBottomWidth: 0, //works
+//                 }}
+//                 inputContainerStyle={{
+//                   color: "black",
+//                 }}
+//                 inputStyle={{ color: "black" }}
+//                 placeholder="Type Here..."
+//                 value={currentRefinement}
+//                 onChange={(event) => refine(event.currentTarget.value)}
+//               ></SearchBar>
+//             </View>
+//           </View>
+//         }
+//         rightComponent={{ icon: "home", color: "#fff" }}
+//       />
+//     );
+//   }
+// };
   const [check1, setCheck1] = React.useState(false);
 // const ToggleRefinement = ({
 //   currentRefinement,
@@ -321,12 +327,46 @@ const SearchBox = ({ currentRefinement, refine }) => {
        return hp(value);
      }
    }
-  function HitFunc ({ hit })  {
-    return (
+
+function Hit({ hit }) {
+     return (
+       <View>
+         <View style={styles.item}>
+           <Image
+             source={{ uri: hit.image }}
+             style={{
+               resizeMode: "contain",
+               width: make_square_elms("20"),
+               height: make_square_elms("20"),
+             }}
+           />
+           <TouchableOpacity
+             style={styles.item2}
+             onPress={() => openDetailScreen(hit.objectID, hit.image)}
+           >
+             <Text style={styles.name}>{hit.Title}</Text>
+             <View style={{ height: 10 }}></View>
+             <Text style={styles.name}>{"$" + hit.Price}</Text>
+             <View style={{ height: 30 }}></View>
+             <Text style={styles.name}>{hit.Location}</Text>
+           </TouchableOpacity>
+         </View>
+         <View style={styles.separator} />
+       </View>
+     );
+   }
+
+const InfiniteHitsdaf = ({ hits, hasMore, refineNext }) => {
+  var hello = "df";
+   return (
+    <FlatList
+    data={hits}
+    onEndReached={() => hasMore && refineNext()}
+    renderItem={({ item }) => (
       <View>
         <View style={styles.item}>
           <Image
-            source={{ uri: hit.image }}
+            source={{ uri: hits.image }}
             style={{
               resizeMode: "contain",
               width: make_square_elms("20"),
@@ -335,23 +375,29 @@ const SearchBox = ({ currentRefinement, refine }) => {
           />
           <TouchableOpacity
             style={styles.item2}
-            onPress={() => openDetailScreen(hit.objectID, hit.image)}
+            onPress={() => openDetailScreen(hits.objectID, hits.image)}
           >
-            <Text style={styles.name}>{hit.Title}</Text>
+            <Text style={styles.name}>{hits.Title}</Text>
             <View style={{ height: 10 }}></View>
-            <Text style={styles.name}>{"$" + hit.Price}</Text>
+            <Text style={styles.name}>{"$" + hits.Price}</Text>
             <View style={{ height: 30 }}></View>
-            <Text style={styles.name}>{hit.Location}</Text>
+            <Text style={styles.name}>{hits.Location}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.separator} />
       </View>
-    );
-    
-  }
+    )}
+  />
+   );
+}
 
+// function Hit({ hit }) { 
+//   return (<Text>{hit.Title}</Text>) 
+// }
 
-const CustomSearchBox = connectSearchBox(SearchBox);
+  
+// const CustomSearchBox = useSearchBox(SearchBox);
+// const Results = connectInfiniteHits(InfiniteHitsdaf);
 // const CustomToggleRefinement = connectToggleRefinement(ToggleRefinement);
 // index
 //   .setSettings({
@@ -379,27 +425,27 @@ const CustomSearchBox = connectSearchBox(SearchBox);
           ></SearchBox> */}
           {/* <RefinementList attribute="Location" style={styles.containerInsta} /> */}
 
-          <CustomSearchBox></CustomSearchBox>
           {/* <Configure
             facetFilters={["Location:Miyapur", "Fashion"]}
             analytics={false}
           ></Configure> */}
-
           {/* <MenuSelect
             attribute="Location"
             defaultRefinement={"Miyapur"}
           /> */}
-
           {/* <Configure
             
             facetFilters={["Location:Tampa, FL"]}
             analytics={false}></Configure> */}
+          {/* <CustomSearchBox></CustomSearchBox> */}
 
-          <InfiniteHits hitComponent={HitFunc} style={styles.containerInsta} />
-          <View style={styles.item2}>
+          <SearchBox/>
+          <InfiniteHits hitComponent={Hit} />
+
+          {/* <View style={styles.item2}>
             <Text>Locations</Text>
             <HierarchicalMenu attributes={["Location"]} />
-          </View>
+          </View> */}
         </InstantSearch>
       </View>
     </View>
@@ -543,9 +589,9 @@ const styles = StyleSheet.create({
   roundButton13: {
     paddingLeft: 10,
     fontSize: hp("1.5"),
-    alignSelf: "right",
-    justifyContent: "right",
-    alignItems: "right",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
     color: "black",
   },
 });
